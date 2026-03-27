@@ -15,8 +15,19 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { setUser, setTokens } = useAuthStore();
+  const { user, setUser, setTokens } = useAuthStore();
   const router = useRouter();
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  React.useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
+  React.useEffect(() => {
+    if (isHydrated && user) {
+      router.push('/dashboard');
+    }
+  }, [user, isHydrated, router]);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();

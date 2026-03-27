@@ -11,14 +11,24 @@ export default function Dashboard() {
   const { user, logout } = useAuthStore();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('links');
+  const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
-    if (!user) {
+    // Wait for zustand persist to hydrate
+    setIsHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (isHydrated && !user) {
       router.push('/login');
     }
-  }, [user, router]);
+  }, [user, router, isHydrated]);
 
-  if (!user) return null;
+  if (!isHydrated || !user) return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-indigo-600"></div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row">
