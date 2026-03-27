@@ -115,7 +115,7 @@ export default function Login() {
             </div>
 
             <div className="flex justify-end pt-1">
-              <Link href="#" className="text-sm font-bold text-brand-primary hover:text-brand-secondary transition-colors">
+              <Link href="/forgot-password" title="Recover your account" className="text-sm font-bold text-brand-primary hover:text-brand-secondary transition-colors">
                 Forgot Password?
               </Link>
             </div>
@@ -146,7 +146,7 @@ export default function Login() {
               href="/register" 
               className="bg-brand-primary/5 hover:bg-brand-primary/10 text-brand-primary px-6 py-2 rounded-full font-bold transition-all hover:scale-105 active:scale-95"
             >
-              Request Access
+              Sign Up
             </Link>
         </div>
       </motion.div>
