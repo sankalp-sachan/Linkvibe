@@ -6,13 +6,14 @@ import { useRouter } from 'next/navigation';
 import api from '@/lib/axios';
 import { toast } from 'react-hot-toast';
 import { Input } from '@/components/ui/Input';
-import { ExternalLink, Sparkles } from 'lucide-react';
+import { ExternalLink, Sparkles, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Register() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const { setUser, setTokens } = useAuthStore();
   const router = useRouter();
@@ -49,18 +50,22 @@ export default function Register() {
             <form onSubmit={handleRegister} className="space-y-5">
                 <div>
                    <label className="block text-sm font-bold text-gray-700 mb-2">Claim your URL</label>
-                   <div className="relative group">
-                       <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold select-none group-focus-within:text-indigo-600 transition-colors">linkvibe-blush.vercel.app/</span>
-                       <Input 
-                            type="text" 
-                            name="username"
-                            value={username} 
-                            onChange={(e) => setUsername(e.target.value.replace(/[^a-zA-Z0-9_]/g, ''))} 
-                            required 
-                            className="pl-[6.5rem] rounded-xl border-gray-200 focus:border-indigo-500 font-bold placeholder:font-medium placeholder:text-gray-300"
-                            placeholder="username"
-                        />
-                   </div>
+                    <div className="flex">
+                        <div className="bg-gray-100 border border-r-0 border-gray-200 px-4 py-3 rounded-l-xl text-gray-400 font-bold select-none whitespace-nowrap overflow-hidden max-w-[120px] text-ellipsis sm:max-w-none">
+                            linkvibe.../
+                        </div>
+                        <div className="relative flex-1">
+                            <Input 
+                                type="text" 
+                                name="username"
+                                value={username} 
+                                onChange={(e) => setUsername(e.target.value.replace(/[^a-zA-Z0-9_]/g, ''))} 
+                                required 
+                                className="rounded-r-xl rounded-l-none border-gray-200 focus:border-indigo-500 font-bold placeholder:font-medium placeholder:text-gray-300 w-full"
+                                placeholder="username"
+                            />
+                        </div>
+                    </div>
                    <p className="text-[10px] text-gray-400 mt-1 uppercase tracking-widest font-bold">Lowercase letters, numbers, and underscores only</p>
                 </div>
                 <div>
@@ -76,15 +81,24 @@ export default function Register() {
                 </div>
                 <div>
                     <label className="block text-sm font-bold text-gray-700 mb-2">Password</label>
-                    <Input 
-                        type="password" 
-                        value={password} 
-                        onChange={(e) => setPassword(e.target.value)} 
-                        required 
-                        minLength={6}
-                        className="rounded-xl border-gray-200"
-                        placeholder="Min. 6 characters"
-                    />
+                    <div className="relative">
+                        <Input 
+                            type={showPassword ? "text" : "password"} 
+                            value={password} 
+                            onChange={(e) => setPassword(e.target.value)} 
+                            required 
+                            minLength={6}
+                            className="rounded-xl border-gray-200 pr-12"
+                            placeholder="Min. 6 characters"
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-indigo-600 transition-colors"
+                        >
+                            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                        </button>
+                    </div>
                 </div>
 
                 <button
