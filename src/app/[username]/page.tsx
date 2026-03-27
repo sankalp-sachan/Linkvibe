@@ -13,7 +13,7 @@ export default function PublicProfile({ params }: { params: Promise<{ username: 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/p/${username}`);
+        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'https://linkvibe-backend.onrender.com/api'}/p/${username}`);
         setProfile(data);
       } catch (err: any) {
         setError(err.response?.data?.message || 'Profile not found');
@@ -85,7 +85,7 @@ export default function PublicProfile({ params }: { params: Promise<{ username: 
                 {links.map((link: any) => (
                     <a
                         key={link._id}
-                        href={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/p/r/${link._id}`}
+                        href={`${process.env.NEXT_PUBLIC_API_URL || 'https://linkvibe-backend.onrender.com/api'}/p/r/${link._id}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`

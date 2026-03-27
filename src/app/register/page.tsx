@@ -50,7 +50,7 @@ export default function Register() {
                 <div>
                    <label className="block text-sm font-bold text-gray-700 mb-2">Claim your URL</label>
                    <div className="relative group">
-                       <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold select-none group-focus-within:text-indigo-600 transition-colors">linkvibe.me/</span>
+                       <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold select-none group-focus-within:text-indigo-600 transition-colors">linkvibe-blush.vercel.app/</span>
                        <Input 
                             type="text" 
                             name="username"
