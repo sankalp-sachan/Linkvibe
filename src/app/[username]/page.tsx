@@ -142,7 +142,7 @@ export default function PublicProfile({ params }: { params: Promise<{ username: 
                         transition={{ delay: 0.4 + (index * 0.1) }}
                         whileHover={{ scale: 1.02, x: 5 }}
                         whileTap={{ scale: 0.98 }}
-                        href={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/p/r/${link._id}`}
+                        href={`${process.env.NEXT_PUBLIC_API_URL || 'https://linkvibe-backend.onrender.com/api'}/p/r/${link._id}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`
