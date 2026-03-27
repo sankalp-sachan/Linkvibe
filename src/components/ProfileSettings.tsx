@@ -54,9 +54,9 @@ export const ProfileSettings = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto py-8">
-      <div className="bg-white rounded-2xl border shadow-sm p-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-8 tracking-tight">Profile Settings</h2>
+    <div className="max-w-2xl mx-auto py-4 md:py-8">
+      <div className="bg-white rounded-2xl border shadow-sm p-5 md:p-8">
+        <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6 md:mb-8 tracking-tight">Profile Settings</h2>
 
         {/* Avatar Section */}
         <div className="flex flex-col items-center mb-10">

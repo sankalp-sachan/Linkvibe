@@ -42,7 +42,7 @@ export const LinkItem: React.FC<LinkItemProps> = ({ link, onUpdate, onDelete }) 
         </div>
 
         {/* Content */}
-        <div className="flex-1 p-5">
+        <div className="flex-1 p-3 md:p-5">
           <div className="flex items-center justify-between mb-4">
             <div className="flex-1 mr-4">
               <input
@@ -63,7 +63,7 @@ export const LinkItem: React.FC<LinkItemProps> = ({ link, onUpdate, onDelete }) 
               </div>
             </div>
             
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 md:gap-4 shrink-0">
                <div className="flex flex-col items-center">
                    <Switch 
                        checked={link.isActive} 

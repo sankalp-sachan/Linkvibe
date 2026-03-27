@@ -37,8 +37,8 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6">
-       <div className="max-w-md w-full bg-slate-50 border border-slate-100 rounded-3xl p-10 shadow-sm">
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4 sm:p-6">
+       <div className="max-w-md w-full bg-slate-50 border border-slate-100 rounded-3xl p-6 md:p-10 shadow-sm">
             <div className="flex flex-col items-center mb-10 text-center">
                 <div className="bg-indigo-600 p-3 rounded-2xl mb-4 shadow-lg flex items-center gap-2">
                     <Sparkles className="w-8 h-8 text-white" />
