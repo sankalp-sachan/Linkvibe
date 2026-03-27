@@ -14,7 +14,7 @@ export default function LandingPage() {
                 <div className="bg-indigo-600 p-2 rounded-xl">
                     <ExternalLink className="w-6 h-6 text-white" />
                 </div>
-                <h1 className="font-black text-2xl tracking-tighter text-gray-900">LinkTree</h1>
+                <h1 className="font-black text-2xl tracking-tighter text-gray-900">LinkVibe</h1>
             </div>
             <div className="flex items-center gap-6">
                 <Link href="/login" className="text-gray-600 font-bold hover:text-indigo-600 transition-colors">Log In</Link>
@@ -96,13 +96,13 @@ export default function LandingPage() {
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
                 <div className="flex items-center gap-3">
                     <ExternalLink className="w-8 h-8 text-indigo-400" />
-                    <h1 className="font-extrabold text-3xl tracking-tighter">LinkTree</h1>
+                    <h1 className="font-extrabold text-3xl tracking-tighter">LinkVibe</h1>
                 </div>
-                <div className="flex gap-10 text-gray-400 font-bold">
+                {/* <div className="flex gap-10 text-gray-400 font-bold">
                     <a href="#" className="hover:text-white transition-colors">Privacy</a>
                     <a href="#" className="hover:text-white transition-colors">Terms</a>
                     <a href="#" className="hover:text-white transition-colors">Support</a>
-                </div>
+                </div> */}
                 <p className="text-gray-600 font-medium uppercase tracking-widest text-xs">© 2026 SaaS Inc. All rights reserved.</p>
             </div>
         </footer>

@@ -53,8 +53,8 @@ export default function Dashboard() {
         {/* Modern Sidebar */}
         <aside className="md:w-[280px] bg-white border-r border-slate-200/60 md:h-screen md:sticky md:top-0 px-4 py-8 flex flex-row md:flex-col items-center md:items-stretch justify-around md:justify-start fixed bottom-0 left-0 right-0 md:relative z-50 premium-shadow md:shadow-none">
             <div className="hidden md:flex items-center gap-4 mb-12 px-2">
-                <div className="bg-brand-primary p-2.5 rounded-2xl shadow-lg shadow-brand-primary/20">
-                    <Sparkles className="w-6 h-6 text-white" />
+                <div className="bg-white p-1.5 rounded-2xl shadow-lg border border-slate-100 overflow-hidden">
+                    <img src="/logo.png" className="w-8 h-8 object-contain" alt="LinkVibe Logo" />
                 </div>
                 <div>
                    <h1 className="font-display font-black text-2xl tracking-tight text-slate-900">LinkVibe</h1>

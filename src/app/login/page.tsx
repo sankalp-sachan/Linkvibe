@@ -66,9 +66,9 @@ export default function Login() {
               initial={{ scale: 0.8, rotate: -10 }}
               animate={{ scale: 1, rotate: 0 }}
               transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-              className="bg-brand-primary p-4 rounded-3xl mb-6 shadow-2xl shadow-brand-primary/20 rotate-0 hover:rotate-6 transition-transform duration-500"
+              className="bg-white p-3 rounded-3xl mb-6 shadow-2xl border border-slate-100 rotate-0 hover:rotate-6 transition-transform duration-500 overflow-hidden"
             >
-                <Sparkles className="w-8 h-8 text-white" />
+                <img src="/logo.png" className="w-10 h-10 object-contain" alt="LinkVibe Logo" />
             </motion.div>
             <h1 className="text-4xl font-display font-black tracking-tight text-gray-900 mb-2">
               Hello <span className="text-gradient">Again</span>

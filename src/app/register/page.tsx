@@ -68,12 +68,12 @@ export default function Register() {
       >
         <div className="flex flex-col items-center mb-10 text-center">
             <motion.div 
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="bg-brand-secondary p-4 rounded-3xl mb-6 shadow-2xl shadow-brand-secondary/20"
+              initial={{ scale: 0.8, rotate: -10 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="bg-white p-3 rounded-3xl mb-6 shadow-2xl border border-slate-100 rotate-0 hover:rotate-6 transition-transform duration-500 overflow-hidden"
             >
-                <Sparkles className="w-8 h-8 text-white" />
+                <img src="/logo.png" className="w-10 h-10 object-contain" alt="LinkVibe Logo" />
             </motion.div>
             <h1 className="text-4xl font-display font-black tracking-tight text-gray-900 mb-2">
               Start Your <span className="text-gradient">Journey</span>
