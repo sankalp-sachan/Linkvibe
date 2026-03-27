@@ -50,8 +50,8 @@ export default function Register() {
             <form onSubmit={handleRegister} className="space-y-5">
                 <div>
                    <label className="block text-sm font-bold text-gray-700 mb-2">Claim your URL</label>
-                    <div className="flex">
-                        <div className="bg-gray-100 border border-r-0 border-gray-200 px-4 py-3 rounded-l-xl text-gray-400 font-bold select-none whitespace-nowrap overflow-hidden max-w-[120px] text-ellipsis sm:max-w-none">
+                    <div className="flex group mb-2">
+                        <div className="bg-gray-100 border border-r-0 border-gray-300 px-4 py-3 rounded-l-xl text-gray-500 font-bold select-none whitespace-nowrap overflow-hidden max-w-[120px] text-ellipsis sm:max-w-none transition-all group-focus-within:border-indigo-600 group-focus-within:text-indigo-600">
                             linkvibe.../
                         </div>
                         <div className="relative flex-1">

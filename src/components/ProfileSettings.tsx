@@ -95,7 +95,7 @@ export const ProfileSettings = () => {
               type="text"
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
-              className="w-full px-5 py-3 rounded-xl border-gray-200 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium placeholder-gray-300"
+              className="w-full px-5 py-3 rounded-xl border-gray-300 bg-gray-50 focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-600 transition-all font-medium placeholder-gray-400 outline-none"
               placeholder="Your Name"
             />
           </div>
@@ -105,7 +105,7 @@ export const ProfileSettings = () => {
             <textarea
               value={bio}
               onChange={(e) => setBio(e.target.value)}
-              className="w-full px-5 py-3 rounded-xl border-gray-200 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium placeholder-gray-300 min-h-[120px]"
+              className="w-full px-5 py-3 rounded-xl border-gray-300 bg-gray-50 focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-600 transition-all font-medium placeholder-gray-400 outline-none min-h-[120px]"
               placeholder="Tell people about yourself..."
               maxLength={160}
             />
