@@ -5,7 +5,19 @@ import { LinkEditor } from '@/components/LinkEditor';
 import { ProfileSettings } from '@/components/ProfileSettings';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useRouter } from 'next/navigation';
-import { ExternalLink, LayoutDashboard, Settings, PieChart, LogOut, Share2 } from 'lucide-react';
+import { 
+  Sparkles, 
+  LayoutDashboard, 
+  Settings, 
+  PieChart, 
+  LogOut, 
+  Share2, 
+  ExternalLink,
+  ChevronRight,
+  User as UserIcon
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'react-hot-toast';
 
 export default function Dashboard() {
   const { user, logout } = useAuthStore();
@@ -14,7 +26,6 @@ export default function Dashboard() {
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
-    // Wait for zustand persist to hydrate
     setIsHydrated(true);
   }, []);
 
@@ -25,104 +36,137 @@ export default function Dashboard() {
   }, [user, router, isHydrated]);
 
   if (!isHydrated || !user) return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-indigo-600"></div>
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-brand-primary/20 border-t-brand-primary rounded-full animate-spin"></div>
     </div>
   );
 
+  const navItems = [
+    { id: 'links', label: 'Links', icon: LayoutDashboard },
+    { id: 'analytics', label: 'Stats', icon: PieChart },
+    { id: 'settings', label: 'Account', icon: Settings },
+  ];
+
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row">
-        {/* Sidebar / Bottom Nav */}
-        <div className="md:w-64 bg-white border-r md:h-screen md:sticky md:top-0 px-4 md:px-6 py-4 md:py-10 flex flex-row md:flex-col items-center md:items-stretch justify-around md:justify-start border-t md:border-t-0 fixed bottom-0 left-0 right-0 md:relative z-50">
-            <div className="hidden md:flex items-center gap-3 mb-10 px-2 lg:flex">
-                <div className="bg-indigo-600 p-2 rounded-lg">
-                    <ExternalLink className="w-6 h-6 text-white" />
+    <div className="min-h-screen bg-[#f8fafc] flex flex-col md:flex-row font-sans selection:bg-brand-primary/10">
+        {/* Modern Sidebar */}
+        <aside className="md:w-[280px] bg-white border-r border-slate-200/60 md:h-screen md:sticky md:top-0 px-4 py-8 flex flex-row md:flex-col items-center md:items-stretch justify-around md:justify-start fixed bottom-0 left-0 right-0 md:relative z-50 premium-shadow md:shadow-none">
+            <div className="hidden md:flex items-center gap-4 mb-12 px-2">
+                <div className="bg-brand-primary p-2.5 rounded-2xl shadow-lg shadow-brand-primary/20">
+                    <Sparkles className="w-6 h-6 text-white" />
                 </div>
-                <h1 className="font-extrabold text-2xl tracking-tighter text-gray-900">LinkVibe</h1>
+                <div>
+                   <h1 className="font-display font-black text-2xl tracking-tight text-slate-900">LinkVibe</h1>
+                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Dashboard Pro</p>
+                </div>
             </div>
 
-            <nav className="flex flex-row md:flex-col flex-1 gap-2 w-full max-w-sm md:max-w-none">
-                <button 
-                    onClick={() => setActiveTab('links')}
-                    className={`flex flex-col md:flex-row items-center gap-1 md:gap-3 flex-1 md:flex-initial px-3 py-2 md:py-3 rounded-xl font-bold md:font-semibold transition-all ${activeTab === 'links' ? 'bg-indigo-50 text-indigo-600' : 'text-gray-400 md:text-gray-500 hover:bg-gray-50'}`}
-                >
-                    <LayoutDashboard className="w-6 h-6 md:w-5 md:h-5" />
-                    <span className="text-[10px] md:text-sm">Links</span>
-                </button>
-                <button 
-                    onClick={() => setActiveTab('analytics')}
-                    className={`flex flex-col md:flex-row items-center gap-1 md:gap-3 flex-1 md:flex-initial px-3 py-2 md:py-3 rounded-xl font-bold md:font-semibold transition-all ${activeTab === 'analytics' ? 'bg-indigo-50 text-indigo-600' : 'text-gray-400 md:text-gray-500 hover:bg-gray-50'}`}
-                >
-                    <PieChart className="w-6 h-6 md:w-5 md:h-5" />
-                    <span className="text-[10px] md:text-sm">Stats</span>
-                </button>
-                <button 
-                    onClick={() => setActiveTab('settings')}
-                    className={`flex flex-col md:flex-row items-center gap-1 md:gap-3 flex-1 md:flex-initial px-3 py-2 md:py-3 rounded-xl font-bold md:font-semibold transition-all ${activeTab === 'settings' ? 'bg-indigo-50 text-indigo-600' : 'text-gray-400 md:text-gray-500 hover:bg-gray-50'}`}
-                >
-                    <Settings className="w-6 h-6 md:w-5 md:h-5" />
-                    <span className="text-[10px] md:text-sm">Account</span>
-                </button>
+            <nav className="flex flex-row md:flex-col flex-1 gap-1.5 w-full">
+                {navItems.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <button 
+                      key={item.id}
+                      onClick={() => setActiveTab(item.id)}
+                      className={`relative flex flex-col md:flex-row items-center gap-1 md:gap-4 flex-1 md:flex-initial px-4 py-3 md:py-4 rounded-2xl font-bold transition-all duration-300 group ${activeTab === item.id ? 'text-brand-primary' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'}`}
+                    >
+                      {activeTab === item.id && (
+                        <motion.div 
+                          layoutId="activeNav"
+                          className="absolute inset-0 bg-brand-primary/5 rounded-2xl hidden md:block"
+                          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                        />
+                      )}
+                      <Icon className={`w-6 h-6 md:w-5 md:h-5 transition-transform group-hover:scale-110 ${activeTab === item.id ? 'text-brand-primary' : ''}`} />
+                      <span className="text-[10px] md:text-base">{item.label}</span>
+                      {activeTab === item.id && (
+                        <div className="hidden md:block ml-auto w-1.5 h-1.5 bg-brand-primary rounded-full shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
+                      )}
+                    </button>
+                  );
+                })}
             </nav>
 
             <button 
                 onClick={logout}
-                className="hidden md:flex items-center gap-3 px-3 py-3 rounded-xl font-semibold text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all mt-auto"
+                className="hidden md:flex items-center gap-4 px-5 py-4 rounded-2xl font-bold text-slate-400 hover:text-red-500 hover:bg-red-50 transition-all mt-auto group"
             >
-                <LogOut className="w-5 h-5 font-bold" />
+                <LogOut className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
                 Sign Out
             </button>
-        </div>
+        </aside>
 
-        {/* Main Content */}
-        <div className="flex-1 flex flex-col overflow-y-auto mb-20 md:mb-0">
-            <header className="h-16 md:h-20 bg-white border-b px-4 md:px-10 flex items-center justify-between sticky top-0 z-40">
-                <div className="hidden sm:block">
-                   <span className="text-gray-400 font-medium">Dashboard / </span>
-                   <span className="text-gray-900 font-bold capitalize">{activeTab}</span>
+        {/* Main Workspace */}
+        <div className="flex-1 flex flex-col overflow-y-auto mb-24 md:mb-0">
+            <header className="h-16 md:h-24 bg-white/80 backdrop-blur-xl border-b border-slate-200/60 px-6 md:px-12 flex items-center justify-between sticky top-0 z-40">
+                <div className="hidden sm:flex items-center gap-3">
+                   <div className="w-1.5 h-1.5 rounded-full bg-brand-primary animate-pulse" />
+                   <h2 className="text-slate-900 font-display font-black text-xl md:text-2xl capitalize">{activeTab}</h2>
                 </div>
-                <div className="sm:hidden flex items-center gap-2">
-                    <div className="bg-indigo-600 p-1.5 rounded-lg flex md:hidden lg:hidden">
-                        <ExternalLink className="w-5 h-5 text-white" />
-                    </div>
-                </div>
-                <div className="flex items-center gap-2 md:gap-4">
+                
+                <div className="flex items-center gap-3 md:gap-6">
                      <button 
                         onClick={() => {
                             const url = `${window.location.origin}/${user.username}`;
                             navigator.clipboard.writeText(url);
-                            alert('Profile link copied to clipboard!');
+                            toast.success('Link copied to clipboard!');
                         }}
-                        className="bg-indigo-50 text-indigo-600 p-2.5 md:px-4 md:py-2 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-indigo-100 transition-colors"
+                        className="bg-slate-900 text-white px-5 py-2.5 rounded-2xl text-sm font-bold flex items-center gap-2.5 hover:bg-slate-800 transition-all shadow-lg active:scale-95"
                      >
-                        <Share2 className="w-4 h-4 md:w-4 md:h-4" />
-                        <span className="hidden md:inline">Share</span>
+                        <Share2 className="w-4 h-4" />
+                        <span className="hidden lg:inline">Share Profile</span>
                      </button>
+
+                     <div className="w-px h-8 bg-slate-200 hidden md:block" />
+
                      <a 
                         href={`/${user.username}`} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 md:gap-4 hover:opacity-80 transition-opacity"
+                        className="flex items-center gap-4 group"
                      >
-                         <div className="text-right mr-1 hidden xs:block">
-                             <p className="text-sm font-bold text-gray-900 leading-none mb-1 text-ellipsis overflow-hidden max-w-[80px]">@{user.username}</p>
-                             <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-tight">View Profile</p>
+                         <div className="text-right hidden sm:block">
+                             <p className="text-sm font-black text-slate-900 leading-none mb-1 group-hover:text-brand-primary transition-colors">@{user.username}</p>
+                             <div className="flex items-center justify-end gap-1 text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
+                                <span>Live View</span>
+                                <ExternalLink className="w-2.5 h-2.5" />
+                             </div>
                          </div>
-                         <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-lg select-none border-2 border-white shadow-sm overflow-hidden">
+                         <div className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-slate-100 group-hover:ring-2 ring-brand-primary ring-offset-2 transition-all overflow-hidden bg-gradient-to-br from-brand-primary/10 to-brand-secondary/10 flex items-center justify-center border-2 border-white shadow-sm">
                              {user?.avatar ? (
                                  <img src={user.avatar} className="w-full h-full object-cover" alt="avatar" />
                              ) : (
-                                 user.username.charAt(0).toUpperCase()
+                                 <span className="text-brand-primary text-xl font-black">{user.username.charAt(0).toUpperCase()}</span>
                              )}
                          </div>
                      </a>
                 </div>
             </header>
 
-            <main className="p-4 md:p-10 max-w-5xl mx-auto w-full">
-                {activeTab === 'links' && <LinkEditor />}
-                {activeTab === 'analytics' && <div className="text-center py-20 bg-white rounded-2xl border shadow-sm"><p className="text-gray-400 font-medium px-4">Detailed charts go here. (Require more data to display meaningfully)</p></div>}
-                {activeTab === 'settings' && <ProfileSettings />}
+            <main className="p-6 md:p-12 max-w-6xl mx-auto w-full">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeTab}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {activeTab === 'links' && <LinkEditor />}
+                    {activeTab === 'analytics' && (
+                      <div className="glass-card rounded-[2.5rem] p-12 text-center border-dashed border-2 flex flex-col items-center gap-6">
+                        <div className="w-20 h-20 rounded-full bg-brand-primary/5 flex items-center justify-center">
+                          <PieChart className="w-10 h-10 text-brand-primary" />
+                        </div>
+                        <div>
+                          <h3 className="text-2xl font-display font-black text-slate-900 mb-2">Analytics Gathering</h3>
+                          <p className="text-slate-500 max-w-sm">We're collecting engagement data for your profile. Check back shortly for detailed performance insights.</p>
+                        </div>
+                      </div>
+                    )}
+                    {activeTab === 'settings' && <ProfileSettings />}
+                  </motion.div>
+                </AnimatePresence>
             </main>
         </div>
     </div>

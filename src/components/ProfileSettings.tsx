@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useAuthStore } from '@/store/useAuthStore';
 import api from '@/lib/axios';
 import { toast } from 'react-hot-toast';
-import { Camera, Save, User as UserIcon } from 'lucide-react';
+import { Camera, Save, User as UserIcon, Loader2, UserCircle2, Type, Quote } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export const ProfileSettings = () => {
   const { user, setUser } = useAuthStore();
@@ -17,7 +18,7 @@ export const ProfileSettings = () => {
     try {
       const { data } = await api.put('/user/update', { displayName, bio });
       setUser(data);
-      toast.success('Profile updated successfully!');
+      toast.success('Your profile has been updated!');
     } catch (err: any) {
       toast.error(err.response?.data?.message || 'Failed to update profile');
     } finally {
@@ -45,7 +46,7 @@ export const ProfileSettings = () => {
         },
       });
       setUser(data.user);
-      toast.success('Avatar updated!');
+      toast.success('Avatar looking sharp!');
     } catch (err: any) {
       toast.error(err.response?.data?.message || 'Failed to upload avatar');
     } finally {
@@ -54,77 +55,110 @@ export const ProfileSettings = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto py-4 md:py-8">
-      <div className="bg-white rounded-2xl border shadow-sm p-5 md:p-8">
-        <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6 md:mb-8 tracking-tight">Profile Settings</h2>
-
-        {/* Avatar Section */}
-        <div className="flex flex-col items-center mb-10">
-          <div className="relative group">
-            <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-indigo-50 bg-indigo-50 flex items-center justify-center">
-              {user?.avatar ? (
-                <img src={user.avatar} alt={user.username} className="w-full h-full object-cover" />
-              ) : (
-                <UserIcon className="w-16 h-16 text-indigo-200" />
-              )}
-            </div>
-            
-            <label className="absolute bottom-1 right-1 bg-indigo-600 p-2.5 rounded-full cursor-pointer shadow-lg hover:bg-indigo-700 transition-all border-2 border-white group-hover:scale-110">
-              {uploading ? (
-                <div className="w-5 h-5 border-2 border-white border-t-transparent animate-spin rounded-full" />
-              ) : (
-                <Camera className="w-5 h-5 text-white" />
-              )}
-              <input 
-                type="file" 
-                className="hidden" 
-                accept="image/*"
-                onChange={handleAvatarUpload}
-                disabled={uploading}
-              />
-            </label>
-          </div>
-          <p className="mt-4 text-sm font-medium text-gray-400">Tap icon to change profile picture</p>
+    <div className="max-w-3xl mx-auto py-4 md:py-6">
+      <div className="glass-card rounded-[2.5rem] p-8 md:p-12 premium-shadow relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-brand-primary/5 rounded-full blur-3xl -mr-16 -mt-16" />
+        
+        <div className="flex items-center gap-4 mb-10">
+           <div className="w-12 h-12 rounded-2xl bg-brand-primary/10 flex items-center justify-center text-brand-primary">
+              <UserCircle2 className="w-7 h-7" />
+           </div>
+           <div>
+              <h2 className="text-2xl md:text-3xl font-display font-black text-slate-900 tracking-tight">Identity Hub</h2>
+              <p className="text-sm font-semibold text-slate-400">Manage your public presence</p>
+           </div>
         </div>
 
-        {/* Form Section */}
-        <form onSubmit={handleUpdateProfile} className="space-y-6">
-          <div>
-            <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Display Name</label>
-            <input
-              type="text"
-              value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
-              className="w-full px-5 py-3 rounded-xl border-gray-300 bg-gray-50 focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-600 transition-all font-medium placeholder-gray-400 outline-none"
-              placeholder="Your Name"
-            />
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            {/* Avatar Section */}
+            <div className="lg:col-span-4 flex flex-col items-center border-b lg:border-b-0 lg:border-r border-slate-100 pb-10 lg:pb-0 lg:pr-10">
+              <div className="relative group">
+                <motion.div 
+                   whileHover={{ scale: 1.02 }}
+                   className="w-40 h-40 rounded-[2.5rem] overflow-hidden bg-slate-100 flex items-center justify-center border-4 border-white shadow-xl relative ring-1 ring-slate-100"
+                >
+                  {user?.avatar ? (
+                    <img src={user.avatar} alt={user.username} className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" />
+                  ) : (
+                    <div className="bg-gradient-to-br from-brand-primary/20 to-brand-secondary/20 w-full h-full flex items-center justify-center">
+                       <span className="text-4xl font-black text-brand-primary">{user?.username.charAt(0).toUpperCase()}</span>
+                    </div>
+                  )}
+                  {uploading && (
+                    <div className="absolute inset-0 bg-white/60 backdrop-blur-sm flex items-center justify-center">
+                       <Loader2 className="w-8 h-8 text-brand-primary animate-spin" />
+                    </div>
+                  )}
+                </motion.div>
+                
+                <label className="absolute -bottom-3 -right-3 bg-slate-900 p-3.5 rounded-2xl cursor-pointer shadow-2xl hover:bg-brand-primary transition-all text-white border-4 border-white group-hover:scale-110 group-active:scale-90">
+                  <Camera className="w-5 h-5" />
+                  <input 
+                    type="file" 
+                    className="hidden" 
+                    accept="image/*"
+                    onChange={handleAvatarUpload}
+                    disabled={uploading}
+                  />
+                </label>
+              </div>
+              <p className="mt-8 text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] text-center">Tap icon to refresh your look</p>
+            </div>
 
-          <div>
-            <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Bio</label>
-            <textarea
-              value={bio}
-              onChange={(e) => setBio(e.target.value)}
-              className="w-full px-5 py-3 rounded-xl border-gray-300 bg-gray-50 focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-600 transition-all font-medium placeholder-gray-400 outline-none min-h-[120px]"
-              placeholder="Tell people about yourself..."
-              maxLength={160}
-            />
-            <p className="text-right text-xs font-semibold text-gray-400 mt-2">{bio.length}/160</p>
-          </div>
+            {/* Form Section */}
+            <form onSubmit={handleUpdateProfile} className="lg:col-span-8 space-y-8">
+              <div className="space-y-6">
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-2 text-xs font-black text-slate-500 uppercase tracking-widest ml-1">
+                      <Type className="w-3.5 h-3.5" />
+                      Public Alias
+                    </label>
+                    <input
+                      type="text"
+                      value={displayName}
+                      onChange={(e) => setDisplayName(e.target.value)}
+                      className="glass-input w-full h-14 rounded-2xl px-6 text-slate-900 font-bold placeholder:text-slate-300 outline-none"
+                      placeholder="e.g. Satoshi Nakamoto"
+                    />
+                  </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-indigo-700 transition-all shadow-md active:scale-[0.98] disabled:opacity-50"
-          >
-            {loading ? (
-              <div className="w-5 h-5 border-2 border-white border-t-transparent animate-spin rounded-full" />
-            ) : (
-              <Save className="w-5 h-5" />
-            )}
-            Save Profile Changes
-          </button>
-        </form>
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-2 text-xs font-black text-slate-500 uppercase tracking-widest ml-1">
+                      <Quote className="w-3.5 h-3.5" />
+                      About You
+                    </label>
+                    <textarea
+                      value={bio}
+                      onChange={(e) => setBio(e.target.value)}
+                      className="glass-input w-full p-6 h-40 rounded-3xl text-slate-900 font-medium placeholder:text-slate-300 outline-none resize-none"
+                      placeholder="Write something extraordinary about yourself..."
+                      maxLength={160}
+                    />
+                    <div className="flex items-center justify-between px-2">
+                        <span className="text-[10px] font-bold text-slate-300">MAX 160 CHARACTERS</span>
+                        <span className={`text-xs font-black ${bio.length > 150 ? 'text-brand-accent' : 'text-slate-400'}`}>{bio.length}/160</span>
+                    </div>
+                  </div>
+              </div>
+
+              <motion.button
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.98 }}
+                type="submit"
+                disabled={loading}
+                className="w-full btn-premium py-4 flex items-center justify-center gap-3 bg-brand-primary hover:bg-brand-primary/90 text-lg"
+              >
+                {loading ? (
+                  <Loader2 className="w-6 h-6 animate-spin" />
+                ) : (
+                  <>
+                    <Save className="w-5 h-5" />
+                    Commit Changes
+                  </>
+                )}
+              </motion.button>
+            </form>
+        </div>
       </div>
     </div>
   );
