@@ -17,6 +17,7 @@ import {
   User as UserIcon
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import api, { getPublicAssetUrl } from '@/lib/axios';
 import { toast } from 'react-hot-toast';
 
 export default function Dashboard() {
@@ -134,7 +135,7 @@ export default function Dashboard() {
                          </div>
                          <div className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-slate-100 group-hover:ring-2 ring-brand-primary ring-offset-2 transition-all overflow-hidden bg-gradient-to-br from-brand-primary/10 to-brand-secondary/10 flex items-center justify-center border-2 border-white shadow-sm">
                              {user?.avatar ? (
-                                 <img src={user.avatar} className="w-full h-full object-cover" alt="avatar" />
+                                 <img src={getPublicAssetUrl(user.avatar) || ''} className="w-full h-full object-cover" alt="avatar" />
                              ) : (
                                  <span className="text-brand-primary text-xl font-black">{user.username.charAt(0).toUpperCase()}</span>
                              )}

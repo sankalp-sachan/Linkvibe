@@ -5,6 +5,8 @@ import axios from 'axios';
 import { ExternalLink, Share2, Globe, Link as LinkIcon, User, Sparkles, Instagram, Twitter, Github, Linkedin, Youtube, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import { getPublicAssetUrl } from '@/lib/axios';
+
 export default function PublicProfile({ params }: { params: Promise<{ username: string }> }) {
   const { username } = React.use(params);
   const [profile, setProfile] = useState<any>(null);
@@ -14,7 +16,7 @@ export default function PublicProfile({ params }: { params: Promise<{ username: 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://linkvibe-backend.onrender.com/api';
         const { data } = await axios.get(`${apiUrl}/p/${username}`);
         setProfile(data);
       } catch (err: any) {
@@ -86,7 +88,7 @@ export default function PublicProfile({ params }: { params: Promise<{ username: 
                   className="w-32 h-32 rounded-[2.5rem] overflow-hidden border-4 border-white shadow-2xl mb-6 relative group"
                 >
                     {user.avatar ? (
-                        <img src={user.avatar} alt={user.displayName} className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" />
+                        <img src={getPublicAssetUrl(user.avatar) || ''} alt={user.displayName} className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" />
                     ) : (
                         <div className="w-full h-full flex items-center justify-center bg-white/20 backdrop-blur-md text-inherit font-display font-black text-4xl uppercase">
                             {user.username.charAt(0)}

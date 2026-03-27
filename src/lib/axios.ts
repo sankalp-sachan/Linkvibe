@@ -43,4 +43,15 @@ api.interceptors.response.use(
   }
 );
 
+export const getPublicAssetUrl = (url: string | undefined): string | null => {
+  if (!url) return null;
+  // If we're on a production-like site and the URL is localhost, fix it
+  if (url.includes('linkvibe-backend.onrender.com') || !url.startsWith('http')) {
+    const filename = url.split('/').pop();
+    const baseUrl = (process.env.NEXT_PUBLIC_API_URL || 'https://linkvibe-backend.onrender.com/api').replace('/api', '');
+    return `${baseUrl}/uploads/${filename}`;
+  }
+  return url;
+};
+
 export default api;

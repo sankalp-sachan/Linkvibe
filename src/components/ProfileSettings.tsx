@@ -5,6 +5,8 @@ import { toast } from 'react-hot-toast';
 import { Camera, Save, User as UserIcon, Loader2, UserCircle2, Type, Quote } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+import { getPublicAssetUrl } from '@/lib/axios';
+
 export const ProfileSettings = () => {
   const { user, setUser } = useAuthStore();
   const [displayName, setDisplayName] = useState(user?.displayName || '');
@@ -78,7 +80,7 @@ export const ProfileSettings = () => {
                    className="w-40 h-40 rounded-[2.5rem] overflow-hidden bg-slate-100 flex items-center justify-center border-4 border-white shadow-xl relative ring-1 ring-slate-100"
                 >
                   {user?.avatar ? (
-                    <img src={user.avatar} alt={user.username} className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" />
+                    <img src={getPublicAssetUrl(user.avatar) || ''} alt={user.username} className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" />
                   ) : (
                     <div className="bg-gradient-to-br from-brand-primary/20 to-brand-secondary/20 w-full h-full flex items-center justify-center">
                        <span className="text-4xl font-black text-brand-primary">{user?.username.charAt(0).toUpperCase()}</span>
