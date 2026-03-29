@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import api from '@/lib/axios';
 import { toast } from 'react-hot-toast';
 import { Input } from '@/components/ui/Input';
-import { Sparkles, Eye, EyeOff, CheckCircle2, ArrowRight, Loader2, Globe, Rocket, ShieldCheck } from 'lucide-react';
+import { Sparkles, Eye, EyeOff, CheckCircle2, ArrowRight, Loader2, Globe } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
@@ -55,65 +55,68 @@ export default function Register() {
   if (!isHydrated) return null;
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4 relative overflow-hidden font-sans">
-      {/* Background Gradients */}
-      <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[800px] h-[800px] bg-indigo-100/40 rounded-full blur-[120px] -z-10 animate-pulse-slow"></div>
-      <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-purple-100/30 rounded-full blur-[120px] -z-10"></div>
+    <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center justify-center p-4 relative overflow-hidden font-sans">
+      {/* Background Orbs */}
+      <div className="absolute top-[-5%] right-[-5%] w-[50%] h-[50%] bg-brand-accent/5 rounded-full blur-[140px] animate-float" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand-primary/10 rounded-full blur-[120px] animate-pulse" />
       
       <motion.div 
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        className="max-w-md w-full glass-card rounded-[3rem] p-10 md:p-14 relative z-10 border-white/50 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)]"
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="max-w-md w-full glass-card rounded-[2.5rem] p-8 md:p-12 relative z-10 premium-shadow"
       >
-        <div className="flex flex-col items-center mb-12 text-center">
+        <div className="flex flex-col items-center mb-10 text-center">
             <motion.div 
-              whileHover={{ rotate: -10, scale: 1.1 }}
-              className="bg-indigo-600 p-4 rounded-[1.5rem] mb-8 shadow-2xl shadow-indigo-200"
+              initial={{ scale: 0.8, rotate: -10 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="bg-white p-3 rounded-3xl mb-6 shadow-2xl border border-slate-100 rotate-0 hover:rotate-6 transition-transform duration-500 overflow-hidden"
             >
-                <Rocket className="w-8 h-8 text-white" />
+                <img src="/logo.png" className="w-10 h-10 object-contain" alt="LinkVibe Logo" />
             </motion.div>
-            <h1 className="text-4xl font-display font-black tracking-tight text-slate-900 mb-2 leading-none">
-              Start Your <span className="text-gradient">Empire.</span>
+            <h1 className="text-4xl font-display font-black tracking-tight text-gray-900 mb-2">
+              Start Your <span className="text-gradient">Journey</span>
             </h1>
-            <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px] mt-2">Claim your unique digital identity</p>
+            <p className="text-slate-500 font-medium">Claim your unique digital identity today</p>
         </div>
 
         <form onSubmit={handleRegister} className="space-y-6">
             <div className="space-y-2">
-                <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1 flex justify-between items-center">
-                  Universal Handle
+                <label className="text-sm font-bold text-slate-700 ml-1 flex items-center justify-between">
+                  <span>Your Unique URL</span>
                   {username.length >= 3 && <CheckCircle2 className="w-4 h-4 text-emerald-500" />}
                 </label>
-                <div className="relative group">
-                    <div className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 font-bold text-sm pointer-events-none">
-                        vibe/
+                <div className="relative group overflow-hidden rounded-2xl border border-slate-200 focus-within:ring-4 focus-within:ring-brand-primary/10 focus-within:border-brand-primary/50 transition-all bg-white/50 backdrop-blur-md">
+                    <div className="absolute left-0 top-0 bottom-0 px-4 flex items-center bg-slate-100/50 border-r border-slate-200 text-slate-400 text-sm font-bold select-none whitespace-nowrap overflow-hidden max-w-[100px] sm:max-w-none">
+                        linkvibe/
                     </div>
                     <Input 
                         type="text" 
                         value={username} 
                         onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ''))} 
                         required 
-                        className="glass-input h-14 rounded-2xl pl-16 pr-6 text-slate-900 font-bold placeholder:text-slate-200"
+                        className="border-none focus:ring-0 h-14 pl-[90px] pr-6 text-slate-900 font-bold placeholder:font-medium placeholder:text-slate-300 w-full bg-transparent"
                         placeholder="username"
                     />
                 </div>
+                <p className="text-[10px] text-slate-400 ml-1 uppercase tracking-widest font-black">lowercase, numbers, & underscores</p>
             </div>
 
             <div className="space-y-2">
-                <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Digital Coordinate</label>
+                <label className="text-sm font-bold text-slate-700 ml-1">Email Space</label>
                 <Input 
                     type="email" 
                     value={email} 
                     onChange={(e) => setEmail(e.target.value)} 
                     required 
-                    className="glass-input h-14 rounded-2xl px-6 text-slate-900 font-bold placeholder:text-slate-300"
-                    placeholder="name@email.com"
+                    className="glass-input h-14 rounded-2xl px-6 text-slate-900 font-medium placeholder:text-slate-400"
+                    placeholder="you@universe.com"
                 />
             </div>
 
             <div className="space-y-2">
-                <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Security Protocol</label>
+                <label className="text-sm font-bold text-slate-700 ml-1">Master Password</label>
                 <div className="relative group">
                     <Input 
                         type={showPassword ? "text" : "password"} 
@@ -121,13 +124,13 @@ export default function Register() {
                         onChange={(e) => setPassword(e.target.value)} 
                         required 
                         minLength={6}
-                        className="glass-input h-14 rounded-2xl px-6 pr-14 text-slate-900 font-bold placeholder:text-slate-300"
-                        placeholder="••••••••"
+                        className="glass-input h-14 rounded-2xl px-6 pr-14 text-slate-900 font-medium placeholder:text-slate-400"
+                        placeholder="Min. 6 characters"
                     />
                     <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-slate-300 hover:text-indigo-600 transition-colors rounded-xl"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-slate-400 hover:text-brand-secondary transition-colors hover:bg-slate-50 rounded-xl"
                     >
                         {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
@@ -135,42 +138,43 @@ export default function Register() {
             </div>
 
             <motion.button
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
                 disabled={loading}
-                className="w-full bg-slate-900 text-white font-black h-16 rounded-[1.3rem] flex items-center justify-center gap-3 group transition-all shadow-xl hover:shadow-slate-200 mt-4"
+                className="w-full btn-premium h-14 flex items-center justify-center gap-2 mt-4 bg-brand-primary hover:bg-brand-primary/90"
             >
                 {loading ? (
                     <Loader2 className="w-6 h-6 animate-spin" />
                 ) : (
-                    <>
-                      Initialize Space
-                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </>
+                    <span className="flex items-center gap-2 text-lg">
+                      Create My Space
+                      <ArrowRight className="w-6 h-6" />
+                    </span>
                 )}
             </motion.button>
         </form>
 
-        <div className="mt-12 text-center text-slate-400 font-bold text-xs uppercase tracking-widest">
-            Already vibrating? {" "}
+        <div className="mt-10 text-center flex flex-col items-center gap-2">
+            <span className="text-slate-400 font-medium">Already have a space?</span>
             <Link 
               href="/login" 
-              className="text-indigo-600 hover:underline underline-offset-4 decoration-2"
+              className="text-brand-primary font-bold hover:text-brand-secondary transition-colors underline-offset-4 hover:underline"
             >
-              Sign In
+              Sign In Here
             </Link>
         </div>
       </motion.div>
 
       {/* Trust Indicator */}
-      <div className="mt-12 flex items-center gap-8 opacity-20 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-700 cursor-default">
+      <div className="mt-8 flex items-center gap-6 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
         <div className="flex items-center gap-2">
-           <ShieldCheck className="w-4 h-4 text-emerald-500" />
-           <span className="text-[10px] font-black uppercase tracking-widest text-slate-900">End-to-End Encrypted</span>
+           <Globe className="w-4 h-4" />
+           <span className="text-[10px] font-bold uppercase tracking-widest">Global Network</span>
         </div>
+        <div className="w-1 h-1 rounded-full bg-slate-300" />
         <div className="flex items-center gap-2">
-           <Globe className="w-4 h-4 text-indigo-500" />
-           <span className="text-[10px] font-black uppercase tracking-widest text-slate-900">Distributed Node</span>
+           <CheckCircle2 className="w-4 h-4" />
+           <span className="text-[10px] font-bold uppercase tracking-widest">Enterprise Encrypted</span>
         </div>
       </div>
     </div>

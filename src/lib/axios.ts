@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useAuthStore } from '@/store/useAuthStore';
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://linkvibe-backend.onrender.com/api',
@@ -30,11 +29,13 @@ api.interceptors.response.use(
           api.defaults.headers.common['Authorization'] = `Bearer ${resp.data.accessToken}`;
           return api(originalRequest);
         } catch (refreshError) {
-          useAuthStore.getState().logout();
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
           window.location.href = '/login';
         }
       } else {
-          useAuthStore.getState().logout();
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
           window.location.href = '/login';
       }
     }
@@ -42,8 +43,8 @@ api.interceptors.response.use(
   }
 );
 
-export const getPublicAssetUrl = (url: string | undefined | null): string | undefined => {
-  if (!url) return undefined;
+export const getPublicAssetUrl = (url: string | undefined): string | null => {
+  if (!url) return null;
   // If we're on a production-like site and the URL is localhost, fix it
   if (url.includes('localhost') || !url.startsWith('http')) {
     const filename = url.split('/').pop();

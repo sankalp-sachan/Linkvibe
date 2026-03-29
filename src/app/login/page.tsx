@@ -6,9 +6,9 @@ import { useRouter } from 'next/navigation';
 import api from '@/lib/axios';
 import { toast } from 'react-hot-toast';
 import { Input } from '@/components/ui/Input';
-import { Sparkles, Eye, EyeOff, ArrowRight, Loader2, Rocket } from 'lucide-react';
+import { Sparkles, Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -50,105 +50,111 @@ export default function Login() {
   if (!isHydrated) return null;
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4 relative overflow-hidden font-sans">
-      {/* Background Gradients */}
-      <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[800px] h-[800px] bg-indigo-100/40 rounded-full blur-[120px] -z-10 animate-pulse-slow"></div>
-      <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-purple-100/30 rounded-full blur-[120px] -z-10"></div>
+    <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center justify-center p-4 relative overflow-hidden font-sans">
+      {/* Dynamic Background Elements */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand-primary/10 rounded-full blur-[120px] animate-pulse" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-brand-secondary/10 rounded-full blur-[120px] animate-pulse delay-700" />
       
       <motion.div 
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        className="max-w-md w-full glass-card rounded-[3rem] p-10 md:p-14 relative z-10 border-white/50 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)]"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="max-w-md w-full glass-card rounded-[2.5rem] p-8 md:p-12 relative z-10 premium-shadow"
       >
-        <div className="flex flex-col items-center mb-12 text-center">
+        <div className="flex flex-col items-center mb-10 text-center">
             <motion.div 
-              whileHover={{ rotate: 10, scale: 1.1 }}
-              className="bg-indigo-600 p-4 rounded-[1.5rem] mb-8 shadow-2xl shadow-indigo-200"
+              initial={{ scale: 0.8, rotate: -10 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="bg-white p-3 rounded-3xl mb-6 shadow-2xl border border-slate-100 rotate-0 hover:rotate-6 transition-transform duration-500 overflow-hidden"
             >
-                <Rocket className="w-8 h-8 text-white" />
+                <img src="/logo.png" className="w-10 h-10 object-contain" alt="LinkVibe Logo" />
             </motion.div>
-            <h1 className="text-4xl font-display font-black tracking-tight text-slate-900 mb-2 leading-none">
-              Welcome <span className="text-gradient">Home.</span>
+            <h1 className="text-4xl font-display font-black tracking-tight text-gray-900 mb-2">
+              Hello <span className="text-gradient">Again</span>
             </h1>
-            <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px] mt-2">Personal Creator Access Portal</p>
+            <p className="text-slate-500 font-medium">Log in to your premium LinkVibe space</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-6">
             <div className="space-y-2">
-                <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">
-                  Digital Identity
+                <label className="text-sm font-bold text-slate-700 ml-1 flex items-center gap-2">
+                  Email Address
                 </label>
-                <Input 
-                    type="email" 
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)} 
-                    required 
-                    className="glass-input h-14 rounded-2xl px-6 text-slate-900 font-bold placeholder:text-slate-300"
-                    placeholder="name@email.com"
-                />
+                <motion.div whileFocus="focus">
+                  <Input 
+                      type="email" 
+                      value={email} 
+                      onChange={(e) => setEmail(e.target.value)} 
+                      required 
+                      className="glass-input h-14 rounded-2xl px-6 text-slate-900 font-medium placeholder:text-slate-400"
+                      placeholder="alex@example.com"
+                  />
+                </motion.div>
             </div>
             
             <div className="space-y-2">
-                <div className="flex justify-between items-center ml-1">
-                  <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Security Pin</label>
-                  <Link href="/forgot-password" title="Recover your account" className="text-[10px] font-black text-indigo-600 hover:text-indigo-700 transition-colors uppercase tracking-widest">
-                    Forgot?
-                  </Link>
-                </div>
+                <label className="text-sm font-bold text-slate-700 ml-1">Password</label>
                 <div className="relative group">
                     <Input 
                         type={showPassword ? "text" : "password"} 
                         value={password} 
                         onChange={(e) => setPassword(e.target.value)} 
                         required 
-                        className="glass-input h-14 rounded-2xl px-6 pr-14 text-slate-900 font-bold placeholder:text-slate-300"
+                        className="glass-input h-14 rounded-2xl px-6 pr-14 text-slate-900 font-medium placeholder:text-slate-400"
                         placeholder="••••••••"
                     />
                     <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-slate-300 hover:text-indigo-600 transition-colors rounded-xl"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-slate-400 hover:text-brand-primary transition-colors hover:bg-slate-50 rounded-xl"
                     >
                         {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
                 </div>
             </div>
 
+            <div className="flex justify-end pt-1">
+              <Link href="/forgot-password" title="Recover your account" className="text-sm font-bold text-brand-primary hover:text-brand-secondary transition-colors">
+                Forgot Password?
+              </Link>
+            </div>
+
             <motion.button
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
                 disabled={loading}
-                className="w-full bg-slate-900 text-white font-black h-16 rounded-[1.3rem] flex items-center justify-center gap-3 group transition-all shadow-xl hover:shadow-slate-200"
+                className="w-full btn-premium h-14 flex items-center justify-center gap-2 group overflow-hidden"
             >
-                {loading ? (
-                  <Loader2 className="w-6 h-6 animate-spin" />
-                ) : (
-                  <>
-                    Unlock Space
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </>
-                )}
+                <span className="relative z-10 flex items-center gap-3 text-lg">
+                  {loading ? (
+                    <Loader2 className="w-6 h-6 animate-spin" />
+                  ) : (
+                    <>
+                      Login Securely
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </>
+                  )}
+                </span>
+                <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:opacity-100 opacity-0 transition-opacity" />
             </motion.button>
         </form>
 
-        <div className="mt-12 text-center">
-            <p className="text-slate-400 font-bold text-xs uppercase tracking-widest">
-              Don't have a vibe? {" "}
-              <Link 
-                href="/register" 
-                className="text-indigo-600 hover:underline decoration-2 underline-offset-4"
-              >
-                Create One Now
-              </Link>
-            </p>
+        <div className="mt-10 text-center flex flex-col items-center gap-2">
+            <span className="text-slate-400 font-medium">New around here?</span>
+            <Link 
+              href="/register" 
+              className="bg-brand-primary/5 hover:bg-brand-primary/10 text-brand-primary px-6 py-2 rounded-full font-bold transition-all hover:scale-105 active:scale-95"
+            >
+              Sign Up
+            </Link>
         </div>
       </motion.div>
 
       {/* Footer Branding */}
-      <div className="mt-12 flex items-center gap-3 opacity-20 grayscale cursor-default select-none group hover:opacity-100 hover:grayscale-0 transition-all duration-700">
-        <Sparkles className="w-4 h-4 text-indigo-600 animate-pulse" />
-        <span className="text-[10px] font-black tracking-[0.3em] uppercase text-slate-900">LinkVibe Secure Authentication</span>
+      <div className="mt-8 relative z-10 flex items-center gap-2 opacity-30 grayscale hover:grayscale-0 transition-all cursor-default select-none">
+        <div className="w-2 h-2 rounded-full bg-brand-primary animate-pulse" />
+        <span className="text-sm font-black tracking-widest uppercase">LinkVibe Secure Layer</span>
       </div>
     </div>
   );
