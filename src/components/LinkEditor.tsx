@@ -30,9 +30,14 @@ export const LinkEditor = () => {
     })
   );
 
+  const hasFetched = React.useRef(false);
+
   useEffect(() => {
-    fetchLinks();
-  }, []);
+    if (!hasFetched.current) {
+      fetchLinks();
+      hasFetched.current = true;
+    }
+  }, [fetchLinks]);
 
   const handleDragEnd = async (event: any) => {
     const { active, over } = event;
