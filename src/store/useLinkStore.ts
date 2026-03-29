@@ -18,6 +18,9 @@ export const useLinkStore = create<LinkStore>((set, get) => ({
   isLoading: false,
   setLinks: (links) => set({ links }),
   fetchLinks: async () => {
+    if (get().isLoading) return;
+    
+    console.log('📡 LinkStore: fetchLinks triggered');
     try {
       set({ isLoading: true });
       const { data } = await api.get('/links');
