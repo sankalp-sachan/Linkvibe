@@ -15,10 +15,11 @@
 }
 
 :root {
-  --background: #f8fafc;
+  --background: #fdfdfd;
   --foreground: #0f172a;
   --accent: #6366f1;
   --gradient-ultra: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+  --gradient-soft: linear-gradient(135deg, #fef2f2 0%, #f5f3ff 50%, #f0f9ff 100%);
   --sidebar-width: 280px;
 }
 
@@ -38,7 +39,7 @@
   }
   
   .glass-input {
-    @apply bg-white/50 backdrop-blur-md border border-slate-200/50 focus:border-brand-primary/50 focus:ring-4 focus:ring-brand-primary/10 transition-all;
+    @apply bg-white/50 backdrop-blur-md border border-slate-200/50 focus:border-brand-primary/50 focus:ring-4 focus:ring-brand-primary/10 transition-all outline-none;
   }
   
   .btn-premium {
@@ -52,14 +53,35 @@
   .premium-shadow {
     box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.05), 0 8px 10px -6px rgb(0 0 0 / 0.05);
   }
+  
+  .bento-card {
+    @apply bg-white border border-slate-100 p-8 rounded-[2.5rem] hover:shadow-2xl hover:shadow-brand-primary/5 transition-all duration-500 hover:-translate-y-1;
+  }
 }
 
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
 
+.animate-pulse-slow {
+  animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.bg-mesh {
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+    radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+    radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+}
+
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-  100% { transform: translateY(0px); }
+  0% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-15px) rotate(2deg); }
+  66% { transform: translateY(5px) rotate(-1deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.1); }
 }

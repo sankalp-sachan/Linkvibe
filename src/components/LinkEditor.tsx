@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { 
   DndContext, 
   closestCenter,
@@ -18,10 +18,10 @@ import { LinkItem } from './LinkItem';
 import api from '@/lib/axios';
 import { toast } from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLinkStore } from '@/store/useLinkStore';
 
 export const LinkEditor = () => {
-  const [links, setLinks] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { links, isLoading, fetchLinks, setLinks, addLink, deleteLink, updateLink } = useLinkStore();
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -33,18 +33,6 @@ export const LinkEditor = () => {
   useEffect(() => {
     fetchLinks();
   }, []);
-
-  const fetchLinks = async () => {
-    try {
-      setLoading(true);
-      const { data } = await api.get('/links');
-      setLinks(data);
-    } catch (err) {
-      toast.error('Failed to load links');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleDragEnd = async (event: any) => {
     const { active, over } = event;
@@ -68,40 +56,39 @@ export const LinkEditor = () => {
     }
   };
 
-  const addLink = async () => {
-    const tempId = 'temp-' + Date.now();
+  const handleAddLink = async () => {
     try {
       const { data } = await api.post('/links', {
         title: 'New Spotlight',
         url: 'https://',
       });
-      setLinks([...links, data]);
+      addLink(data);
       toast.success('New link added to your space');
     } catch (err: any) {
         toast.error(err.response?.data?.message || 'Failed to add link');
     }
   };
 
-  const updateLink = async (id: string, updates: any) => {
+  const handleUpdateLink = async (id: string, updates: any) => {
     try {
       const { data } = await api.put(`/links/${id}`, updates);
-      setLinks(links.map((l) => (l._id === id ? data : l)));
+      updateLink(id, data);
     } catch (err) {
       toast.error('Failed to update link');
     }
   };
 
-  const deleteLink = async (id: string) => {
+  const handleDeleteLink = async (id: string) => {
     try {
       await api.delete(`/links/${id}`);
-      setLinks(links.filter((l) => l._id !== id));
+      deleteLink(id);
       toast.success('Link removed from space');
     } catch (err) {
       toast.error('Failed to delete link');
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px]">
         <Loader2 className="w-12 h-12 text-brand-primary animate-spin mb-6" />
@@ -124,7 +111,7 @@ export const LinkEditor = () => {
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={addLink}
+          onClick={handleAddLink}
           className="btn-premium flex items-center gap-3 bg-brand-primary hover:bg-brand-primary/90 px-8 py-4 rounded-2xl shadow-xl shadow-brand-primary/20 text-lg"
         >
           <PlusCircle className="w-6 h-6" />
@@ -145,7 +132,7 @@ export const LinkEditor = () => {
             <h3 className="text-2xl font-display font-black text-slate-900 mb-3">Your space is silent</h3>
             <p className="text-slate-400 max-w-sm mx-auto mb-10 font-medium">Capture your audience by spotlighting your most important digital destinations.</p>
             <button
-              onClick={addLink}
+              onClick={handleAddLink}
               className="group flex items-center gap-2 mx-auto text-brand-primary font-black hover:text-brand-secondary transition-all"
             >
               Start Creating
@@ -167,8 +154,8 @@ export const LinkEditor = () => {
                   <LinkItem
                     key={link._id}
                     link={link}
-                    onUpdate={updateLink}
-                    onDelete={deleteLink}
+                    onUpdate={handleUpdateLink}
+                    onDelete={handleDeleteLink}
                   />
                 ))}
               </div>

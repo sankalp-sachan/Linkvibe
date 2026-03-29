@@ -3,7 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import { LinkEditor } from '@/components/LinkEditor';
 import { ProfileSettings } from '@/components/ProfileSettings';
+import { PhonePreview } from '@/components/PhonePreview';
 import { useAuthStore } from '@/store/useAuthStore';
+import { useLinkStore } from '@/store/useLinkStore';
 import { useRouter } from 'next/navigation';
 import { 
   Sparkles, 
@@ -13,15 +15,15 @@ import {
   LogOut, 
   Share2, 
   ExternalLink,
-  ChevronRight,
-  User as UserIcon
+  Rocket
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import api, { getPublicAssetUrl } from '@/lib/axios';
+import { getPublicAssetUrl } from '@/lib/axios';
 import { toast } from 'react-hot-toast';
 
 export default function Dashboard() {
   const { user, logout } = useAuthStore();
+  const { links } = useLinkStore();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('links');
   const [isHydrated, setIsHydrated] = useState(false);
@@ -49,16 +51,16 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex flex-col md:flex-row font-sans selection:bg-brand-primary/10">
+    <div className="min-h-screen bg-[#fdfdfd] flex flex-col md:flex-row font-sans selection:bg-brand-primary/10">
         {/* Modern Sidebar */}
         <aside className="md:w-[280px] bg-white border-r border-slate-200/60 md:h-screen md:sticky md:top-0 px-4 py-8 flex flex-row md:flex-col items-center md:items-stretch justify-around md:justify-start fixed bottom-0 left-0 right-0 md:relative z-50 premium-shadow md:shadow-none">
             <div className="hidden md:flex items-center gap-4 mb-12 px-2">
-                <div className="bg-white p-1.5 rounded-2xl shadow-lg border border-slate-100 overflow-hidden">
-                    <img src="/logo.png" className="w-8 h-8 object-contain" alt="LinkVibe Logo" />
+                <div className="bg-indigo-600 p-2 rounded-xl shadow-lg shadow-indigo-100">
+                    <Rocket className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                   <h1 className="font-display font-black text-2xl tracking-tight text-slate-900">LinkVibe</h1>
-                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Dashboard Pro</p>
+                   <h1 className="font-display font-black text-2xl tracking-tight text-slate-900 leading-none">LinkVibe</h1>
+                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-1">Creator Hub</p>
                 </div>
             </div>
 
@@ -102,7 +104,7 @@ export default function Dashboard() {
             <header className="h-16 md:h-24 bg-white/80 backdrop-blur-xl border-b border-slate-200/60 px-6 md:px-12 flex items-center justify-between sticky top-0 z-40">
                 <div className="hidden sm:flex items-center gap-3">
                    <div className="w-1.5 h-1.5 rounded-full bg-brand-primary animate-pulse" />
-                   <h2 className="text-slate-900 font-display font-black text-xl md:text-2xl capitalize">{activeTab}</h2>
+                   <h2 className="text-slate-900 font-display font-black text-xl md:text-2xl capitalize tracking-tight">{activeTab}</h2>
                 </div>
                 
                 <div className="flex items-center gap-3 md:gap-6">
@@ -129,7 +131,7 @@ export default function Dashboard() {
                          <div className="text-right hidden sm:block">
                              <p className="text-sm font-black text-slate-900 leading-none mb-1 group-hover:text-brand-primary transition-colors">@{user.username}</p>
                              <div className="flex items-center justify-end gap-1 text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
-                                <span>Live View</span>
+                                <span>Preview</span>
                                 <ExternalLink className="w-2.5 h-2.5" />
                              </div>
                          </div>
@@ -144,30 +146,37 @@ export default function Dashboard() {
                 </div>
             </header>
 
-            <main className="p-6 md:p-12 max-w-6xl mx-auto w-full">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeTab}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {activeTab === 'links' && <LinkEditor />}
-                    {activeTab === 'analytics' && (
-                      <div className="glass-card rounded-[2.5rem] p-12 text-center border-dashed border-2 flex flex-col items-center gap-6">
-                        <div className="w-20 h-20 rounded-full bg-brand-primary/5 flex items-center justify-center">
-                          <PieChart className="w-10 h-10 text-brand-primary" />
-                        </div>
-                        <div>
-                          <h3 className="text-2xl font-display font-black text-slate-900 mb-2">Analytics Gathering</h3>
-                          <p className="text-slate-500 max-w-sm">We're collecting engagement data for your profile. Check back shortly for detailed performance insights.</p>
-                        </div>
-                      </div>
-                    )}
-                    {activeTab === 'settings' && <ProfileSettings />}
-                  </motion.div>
-                </AnimatePresence>
+            <main className="p-6 md:p-12 max-w-[1400px] mx-auto w-full flex flex-col xl:flex-row gap-12">
+                <div className="flex-1">
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={activeTab}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        {activeTab === 'links' && <LinkEditor />}
+                        {activeTab === 'analytics' && (
+                          <div className="bento-card text-center flex flex-col items-center gap-6 py-20">
+                            <div className="w-20 h-20 rounded-3xl bg-brand-primary/5 flex items-center justify-center border border-brand-primary/10 shadow-inner">
+                              <PieChart className="w-10 h-10 text-brand-primary" />
+                            </div>
+                            <div>
+                              <h3 className="text-2xl font-display font-black text-slate-900 mb-2">Advanced Analytics</h3>
+                              <p className="text-slate-500 max-w-sm">We're calculating your reach and engagement. Detailed performance insights will appear here soon.</p>
+                            </div>
+                          </div>
+                        )}
+                        {activeTab === 'settings' && <ProfileSettings />}
+                      </motion.div>
+                    </AnimatePresence>
+                </div>
+
+                {/* Live Preview Sidecar */}
+                {activeTab === 'links' && (
+                  <PhonePreview user={user} links={links} />
+                )}
             </main>
         </div>
     </div>
